@@ -1,0 +1,114 @@
+<div class="container">
+  <header class="header">
+    <h1>🚀 RIVO9 Brand Fetch</h1>
+    <p>Check your Brand Fetch API endpoints</p>
+  </header>
+
+  <div class="tabs">
+    <button 
+      class="tab" 
+      [class.active]="activeTab === 'apikey'"
+      (click)="switchTab('apikey')">
+      🔑 API Key (/api/secure/rivofetch)
+    </button>
+    <button 
+      class="tab" 
+      [class.active]="activeTab === 'jwt'"
+      (click)="switchTab('jwt')">
+      🎫 JWT Token (/forward)
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="form-section">
+      <div class="form-group">
+        <label>Brand URL</label>
+        <input 
+          type="text" 
+          [(ngModel)]="brandUrl" 
+          placeholder="https://www.apple.com"
+          class="input">
+      </div>
+
+      <div class="form-group" *ngIf="activeTab === 'apikey'">
+        <label>API Key</label>
+        <input 
+          type="text" 
+          [(ngModel)]="apiKey" 
+          placeholder="sk-1234567890abcdef..."
+          class="input">
+      </div>
+
+      <div class="form-group" *ngIf="activeTab === 'jwt'">
+        <label>JWT Token</label>
+        <textarea 
+          [(ngModel)]="jwtToken" 
+          placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          class="textarea"
+          rows="3"></textarea>
+      </div>
+
+      <button 
+        class="btn-primary" 
+        (click)="activeTab === 'apikey' ? testApiKeyEndpoint() : testJWTEndpoint()"
+        [disabled]="loading">
+        <span *ngIf="!loading">🚀 Test Endpoint</span>
+        <span *ngIf="loading">⏳ Loading...</span>
+      </button>
+    </div>
+
+    <div class="response-section" *ngIf="error || response">
+      <div class="error-box" *ngIf="error">
+        <h3>❌ Error</h3>
+        <pre>{{ error }}</pre>
+      </div>
+
+      <div class="success-box" *ngIf="response">
+        <h3>✅ Success Response</h3>
+        
+        <div class="response-grid">
+          <div class="response-item" *ngIf="response.Logo">
+            <h4>Logo</h4>
+            <div class="logo-preview" *ngIf="response.Logo.Logo">
+              <img [src]="response.Logo.Logo" alt="Brand Logo" />
+            </div>
+            <pre>{{ response.Logo | json }}</pre>
+          </div>
+
+          <div class="response-item" *ngIf="response.Colors && response.Colors.length > 0">
+            <h4>Colors ({{ response.Colors.length }})</h4>
+            <div class="color-palette">
+              <div 
+                *ngFor="let color of response.Colors" 
+                class="color-box"
+                [style.background-color]="color.hex"
+                [title]="color.hex">
+              </div>
+            </div>
+            <pre>{{ response.Colors | json }}</pre>
+          </div>
+
+          <div class="response-item" *ngIf="response.Fonts && response.Fonts.length > 0">
+            <h4>Fonts ({{ response.Fonts.length }})</h4>
+            <pre>{{ response.Fonts | json }}</pre>
+          </div>
+
+          <div class="response-item" *ngIf="response.Company">
+            <h4>Company Info</h4>
+            <pre>{{ response.Company | json }}</pre>
+          </div>
+
+          <div class="response-item" *ngIf="response._performance">
+            <h4>Performance</h4>
+            <pre>{{ response._performance | json }}</pre>
+          </div>
+        </div>
+
+        <details class="full-response">
+          <summary>View Full JSON Response</summary>
+          <pre>{{ response | json }}</pre>
+        </details>
+      </div>
+    </div>
+  </div>
+</div>

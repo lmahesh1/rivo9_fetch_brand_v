@@ -24,6 +24,17 @@ export class App {
   activeTab: 'apikey' | 'jwt' = 'apikey';
 
   constructor(private brandService: BrandService) {}
+  private normalizeUrl(url: string): string {
+    url = url.trim();
+    if (!url) return url;
+    
+    // Add https:// if no protocol specified
+    if (!url.match(/^https?:\/\//i)) {
+      url = 'https://' + url;
+    }
+    
+    return url;
+  }
 
   testApiKeyEndpoint() {
     if (!this.apiKey.trim()) {
@@ -36,7 +47,8 @@ export class App {
     this.response = null;
 
     const request: BrandFetchRequest = {
-      url: this.brandUrl
+      //url: this.brandUrl
+      url: this.normalizeUrl(this.brandUrl)
     };
 
     this.brandService.fetchBrandWithApiKey(request, this.apiKey).subscribe({
@@ -62,7 +74,7 @@ export class App {
     this.response = null;
 
     const request: BrandFetchRequest = {
-      url: this.brandUrl
+      url: this.normalizeUrl(this.brandUrl)
     };
 
     this.brandService.fetchBrandWithJWT(request, this.jwtToken).subscribe({

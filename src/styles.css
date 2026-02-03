@@ -176,6 +176,7 @@ body {
   border: 2px solid #cfc;
   border-radius: 10px;
   padding: 20px;
+  overflow: hidden;
 }
 
 .success-box h3 {
@@ -194,6 +195,7 @@ body {
   padding: 15px;
   border-radius: 8px;
   border: 1px solid #ddd;
+  overflow: hidden;
 }
 
 .response-item h4 {
@@ -237,6 +239,9 @@ pre {
   font-size: 0.85rem;
   max-height: 300px;
   overflow-y: auto;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  max-width: 100%;
 }
 
 .full-response {

@@ -51,7 +51,7 @@ export class BrandService {
     });
 
     return this.http.post<BrandResponse>(
-      `${this.apiUrl}/forward`,
+      `${this.apiUrl}/api/forward`,
       request,
       { headers }
     );
